@@ -31,17 +31,26 @@ class HerMessageBubble extends StatelessWidget {
 class _ImageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final size = MediaQuery.of(context).size;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Image.asset(
-        'lib/assets/images/no.gif',
+      child: Image.network(
+        'https://cdn-icons-png.flaticon.com/256/6122/6122881.png',
         width: size.width * 0.7,
         height: 150,
-        fit: BoxFit.cover
-        ),
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+
+          return Container(
+            width: size.width * 0.7,
+            height: 150,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Text('Mi amor está enviando una imagen'),
+          );
+        },
+      ),
     );
   }
 }
