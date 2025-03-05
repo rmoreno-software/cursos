@@ -30,21 +30,21 @@ List<Map<String, dynamic>> videoPosts = [
     'views': 31030,
   },
   {
-    'name': 'No quiero ir a trabajar hoy señor Stark',
+    'name': 'Que paisaje más encantador',
     'videoUrl': 'assets/videos/6.mp4',
-    'likes': 10,
-    'views': 330,
+    'likes': 4578,
+    'views': 22365,
   },
   {
-    'name': 'Limpiar nunca fue tan divertido',
+    'name': 'Legless Rope Climb',
     'videoUrl': 'assets/videos/7.mp4',
-    'likes': 1320,
-    'views': 33032,
+    'likes': 9875,
+    'views': 50236,
   },
   {
-    'name': '¿Ya llegamos a la India?... umm si',
+    'name': 'Carretera otoñal des del cielo',
     'videoUrl': 'assets/videos/8.mp4',
-    'likes': 342,
-    'views': 3332,
-  },
+    'likes': 2365,
+    'views': 123654,
+  }
 ];
