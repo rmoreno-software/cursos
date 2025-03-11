@@ -75,11 +75,12 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     final lastId = imagesIds.last;
     
     if ( !isMounted ) return;
-    isLoading = true;
+    
     
     imagesIds.clear();
     imagesIds.add(lastId + 1);
     addFiveImages();
+    isLoading = false;
     setState(() {});
   }
 
