@@ -7,3 +7,24 @@ final isDarkModeProvider = StateProvider((ref) => false);
 final colorListProvider = Provider((ref) => colorList);
 
 final selectedIndexColorProvider = StateProvider((ref) => 0);
+
+// Un objeto de tipo AppTheme (custom)
+
+final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, AppTheme>(
+  (ref) => ThemeNotifier()
+);
+ 
+class ThemeNotifier extends StateNotifier<AppTheme> {
+  
+  // STATE o Estado = new AppTheme()
+  ThemeNotifier(): super( AppTheme());
+
+  void toggleDarkmode() {
+
+  }
+
+  void changeColorIndex( int colorIndex ) {
+    
+  }
+
+}
