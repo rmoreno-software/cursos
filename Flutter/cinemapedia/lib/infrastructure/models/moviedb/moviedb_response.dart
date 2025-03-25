@@ -1,13 +1,13 @@
 import 'package:cinemapedia/infrastructure/models/moviedb/movie_moviedb.dart';
 
-class Welcome {
+class MoviedbResponse {
     final Dates? dates;
     final int page;
     final List<MovieMovieDB> results;
     final int totalPages;
     final int totalResults;
 
-    Welcome({
+    MoviedbResponse({
         required this.dates,
         required this.page,
         required this.results,
@@ -15,7 +15,7 @@ class Welcome {
         required this.totalResults,
     });
 
-    factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+    factory MoviedbResponse.fromJson(Map<String, dynamic> json) => MoviedbResponse(
         dates: json["dates"] ? Dates.fromJson(json["dates"]) : null,
         page: json["page"],
         results: List<MovieMovieDB>.from(json["results"].map((x) => MovieMovieDB.fromJson(x))),

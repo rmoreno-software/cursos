@@ -17,7 +17,7 @@ class MovieMapper {
     posterPath: 
       moviedb.posterPath != ''
         ? 'https://image.tmdb.org/t/p/original${moviedb.posterPath}'
-        : 'https://m.media-amazon.com/images/I/61s8vyZLSzL._AC_UF894,1000_QL80_.jpg',
+        : 'no-poster',
     releaseDate: moviedb.releaseDate,
     title: moviedb.title,
     video: moviedb.video,
