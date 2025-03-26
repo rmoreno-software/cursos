@@ -28,7 +28,7 @@ class MoviesSlideshow extends StatelessWidget {
           margin: EdgeInsets.only(top: 0),
           builder: DotSwiperPaginationBuilder(
             activeColor: colors.primary,
-            color: colors.secondary
+            color: colors.inversePrimary
           )
         ),
         itemCount: movies.length,
