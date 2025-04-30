@@ -18,7 +18,7 @@ class MovieMapper {
     posterPath:
         moviedb.posterPath != ''
             ? 'https://image.tmdb.org/t/p/original${moviedb.posterPath}'
-            : 'no-poster',
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR9nYpUUiZPsigy79LSp52gnjGJ4Gd2TLApbT761cJI37xjDiMVCOwct7n_TqB0EOxFAI&usqp=CAU',
     releaseDate: moviedb.releaseDate != null
       ? moviedb.releaseDate!
       : DateTime.now(),
