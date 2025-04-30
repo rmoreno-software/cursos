@@ -10,10 +10,10 @@ final actorsByMovieProvider = StateNotifierProvider<ActorsByMovieNotifier, Map<S
 });
 
 /*
-  '505642': Actor[],
-  '505643': Actor[],
-  '505644': Actor[],
-  '505645': Actor[],
+  '505642': List<Actor>,
+  '505643': List<Actor>,
+  '505644': List<Actor>,
+  '505645': List<Actor>,
 */
 
 typedef GetActorsCallback = Future<List<Actor>>Function(String movieId);
