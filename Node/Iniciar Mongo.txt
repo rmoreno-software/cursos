@@ -1,0 +1,2 @@
+Anar a la carpeta: C:\Program Files\MongoDB\Server\8.0\bin
+executar: mongod.exe

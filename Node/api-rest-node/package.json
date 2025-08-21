@@ -1,0 +1,23 @@
+{
+  "name": "api-rest-node",
+  "version": "1.0.0",
+  "description": "API REST con NodeJS",
+  "license": "MIT",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1",
+    "multer": "^2.0.2",
+    "validator": "^13.15.15"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
