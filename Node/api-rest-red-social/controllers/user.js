@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/User");
 const jwt = require("../services/jwt");
 
@@ -178,7 +180,7 @@ const list = async (req, res) => {
     let users = null;
 
     try {
-        users = await User.paginate({}, { page, limit: itemsPerPage ,sort: { _id: 1 } });
+        users = await User.paginate({}, { page, limit: itemsPerPage, sort: { _id: 1 } });
     } catch (error) {
         console.error(`Users - List: ${error}`);
         return res.status(500).send({
@@ -200,10 +202,150 @@ const list = async (req, res) => {
         users
     });
 
+}
 
+const update = async (req, res) => {
 
+    const userIdentity = req.user.id;
+    const updates = req.body;
 
+    let user = null;
 
+    try {
+        user = await User.findById(userIdentity);
+    } catch (error) {
+        return res.status(500).send({
+            status: "error",
+            message: "Error buscando usuario"
+        })
+    }
+
+    if (!user) {
+        return res.status(404).send({
+            status: "error",
+            message: "User not found"
+        });
+    }
+
+    const allowedFields = ["name", "surname", "nick", "email", "password"];
+
+    for (let key of Object.keys(updates)) {
+        if (allowedFields.includes(key)) {
+            if (key === "password") {
+                let hash = await bcrypt.hash(updates.password, 10);
+                user.password = hash;
+            } else {
+                user[key] = updates[key]
+            }
+        }
+    }
+
+    try {
+        await user.save();
+    } catch (error) {
+        return res.status(500).send({
+            status: "error",
+            message: "Error saving user"
+        });
+    }
+
+    return res.status(200).send({
+        status: "success",
+        user: user
+    });
+}
+
+const upload = async (req, res) => {
+
+    const userIdentity = req.user;
+
+    if (!req.file) {
+        return res.status(500).send({
+            status: "success",
+            message: "Falta proporcionar la imagen"
+        });
+    }
+
+    let image = req.file.originalname;
+
+    const imageSplit = image.split("\.");
+    const extension = imageSplit[1];
+
+    if (extension != "png" && extension != "jpg" && extension != "jpeg" && extension != "gif") {
+
+        const filePath = req.file.path;
+        const fileDeleted = fs.unlinkSync(filePath);
+
+        return res.status(500).send({
+            status: "error",
+            message: "Extensión no válida"
+        });
+
+    }
+
+    let userUpdated = null;
+
+    try {
+        userUpdated = await User.findOneAndUpdate({_id: userIdentity.id}, {image: req.file.filename}, {new: true});
+    } catch(error) {
+        console.log("Error: " + error);
+        return res.status(500).send({
+            status: "error",
+            message: "Error uploading image"
+        });
+    }
+
+    if (!userUpdated) {
+        return res.status(404).send({
+            status: "error",
+            message: "User not found"
+        });
+    }
+
+    return res.status(200).send({
+        status: "success",
+        user: userUpdated,
+    });
+}
+
+const avatar = async (req, res) => {
+
+    const userIdentity = req.user;
+
+    let user = null;
+
+    try {
+        user = await User.findById(userIdentity.id).exec();
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({
+            status: "Error",
+            message: "Error searching user"
+        });
+    }
+
+    if (!user) {
+        return res.status(404).send({
+            status: "error",
+            message: "User not found"
+        });
+    } 
+
+    const filePath = "./uploads/avatars/" + user.image;
+    console.log("filePath: " + filePath);
+
+    fs.stat(filePath, (error, exists) => {
+        if (!exists) {
+            return res.status(404).send({
+                status:"error",
+                message: "No existe la imagen",
+            });
+        } 
+    
+        return res.sendFile(path.resolve(filePath));
+    });
+
+    
 }
 
 module.exports = {
@@ -211,5 +353,8 @@ module.exports = {
     login,
     pruebaUser,
     profile,
-    list
+    list,
+    update,
+    upload,
+    avatar
 }

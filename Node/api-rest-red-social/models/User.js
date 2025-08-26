@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     surname: String,
+    bio: String,
     nick: {
         type: String,
         required: true
@@ -35,4 +36,4 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("User", UserSchema, "users")
+module.exports = mongoose.model("User", UserSchema, "users");
