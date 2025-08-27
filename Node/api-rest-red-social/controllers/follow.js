@@ -2,9 +2,9 @@ const Follow = require("../models/Follow");
 const User = require("../models/User");
 
 const test = (req, res) => {
-    return res.status(200).send({message: "Mensaje enviado des de controller"});
+    return res.status(200).send({ message: "Mensaje enviado des de controller" });
 }
-const save =async  (req, res) => {
+const save = async (req, res) => {
 
     const userIdentity = req.user;
 
@@ -45,7 +45,7 @@ const save =async  (req, res) => {
     }
 
     try {
-        follow = await Follow.findOne({user: follower._id, followed: followed._id}).exec();
+        follow = await Follow.findOne({ user: follower._id, followed: followed._id }).exec();
     } catch (error) {
         return res.status(500).send({
             status: "error",
@@ -99,7 +99,7 @@ const unfollow = async (req, res) => {
 
     try {
         follow = await Follow.deleteOne(
-            {user: userIdentity.id, followed: idFollowed});
+            { user: userIdentity.id, followed: idFollowed });
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -113,8 +113,57 @@ const unfollow = async (req, res) => {
     });
 }
 
+const following = async (req, res) => {
+
+    let userId = req.user.id;
+
+    if (req.params.id) userId = req.params.id;
+
+    let page = 1;
+
+    if (req.params.page) page = req.params.page;
+
+    const itemsPerPage = 3;
+
+    let following = null;
+
+    try {
+        following = await Follow.paginate(
+            { user: userId },
+            {
+                page,
+                limit: itemsPerPage,
+                sort: { _id: 1 },
+                populate: [
+                    { path: "user", select: "-password -role -__v" },
+                    { path: "followed", select: "-password -role -__v" }
+                ]
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            status: "error",
+            message: "Error in following endpoint"
+        });
+    }
+
+    return res.status(200).send({
+        status: "success",
+        following,
+    });
+};
+
+const followers = (req, res) => {
+    return res.status(200).send({
+        status: "success"
+    });
+};
+
 module.exports = {
     test,
     save,
-    unfollow
+    unfollow,
+    following,
+    followers
 }
