@@ -1,5 +1,6 @@
 const Follow = require("../models/Follow");
 const User = require("../models/User");
+const followService = require("../services/followService");
 
 const test = (req, res) => {
     return res.status(200).send({ message: "Mensaje enviado des de controller" });
@@ -126,6 +127,7 @@ const following = async (req, res) => {
     const itemsPerPage = 3;
 
     let following = null;
+    let followingFromService = null;
 
     try {
         following = await Follow.paginate(
@@ -140,6 +142,9 @@ const following = async (req, res) => {
                 ]
             }
         );
+
+        followingFromService = await followService.followUserIds(req.user.id);
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
@@ -151,6 +156,8 @@ const following = async (req, res) => {
     return res.status(200).send({
         status: "success",
         following,
+        user_following: followingFromService.following,
+        user_followers: followingFromService.followers
     });
 };
 
