@@ -137,7 +137,7 @@ const following = async (req, res) => {
                 limit: itemsPerPage,
                 sort: { _id: 1 },
                 populate: [
-                    { path: "user", select: "-password -role -__v" },
+                    //{ path: "user", select: "-password -role -__v" },
                     { path: "followed", select: "-password -role -__v" }
                 ]
             }
@@ -161,9 +161,49 @@ const following = async (req, res) => {
     });
 };
 
-const followers = (req, res) => {
+const followers = async (req, res) => {
+
+    let userId = req.user.id;
+
+    if (req.params.id) userId = req.params.id;
+
+    let page = 1;
+
+    if (req.params.page) page = req.params.page;
+
+    const itemsPerPage = 3;
+
+    let followers = null;
+    let followingFromService = null;
+
+    try {
+        followers = await Follow.paginate(
+            { followed: userId },
+            {
+                page,
+                limit: itemsPerPage,
+                sort: { _id: 1 },
+                populate: [
+                    { path: "user", select: "-password -role -__v" },
+                ]
+            }
+        );
+
+        followingFromService = await followService.followUserIds(req.user.id);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send({
+            status: "error",
+            message: "Error in following endpoint"
+        });
+    }
+
     return res.status(200).send({
-        status: "success"
+        status: "success",
+        followers,
+        user_following: followingFromService.following,
+        user_followers: followingFromService.followers
     });
 };
 

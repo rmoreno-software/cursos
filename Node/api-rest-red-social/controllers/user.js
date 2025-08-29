@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const User = require("../models/User");
 const jwt = require("../services/jwt");
+const followService = require("../services/followService");
 
 const pruebaUser = (req, res) => {
     return res.status(200).send({
@@ -141,28 +142,34 @@ const profile = async (req, res) => {
 
     let id = req.params.id;
     let user = null;
+    let followInfo = null;
 
     try {
         user = await User.findById(id)
             .select({ password: 0, role: 0 })
             .exec();
+
+        if (!user) {
+            return res.status(404).send({
+                status: "error",
+                message: "User not found"
+            });
+        }
+
+        followInfo = await followService.followThisUser(req.user.id, id);
     } catch (error) {
+        console.log(error);
         return res.status(500).send({
             status: "error",
             message: "Error searching user"
         });
     }
 
-    if (!user) {
-        return res.status(404).send({
-            status: "error",
-            message: "User not found"
-        });
-    }
-
     return res.status(200).send({
         status: "success",
-        user
+        user,
+        following: followInfo.following,
+        follower: followInfo.follower
     });
 }
 
@@ -179,8 +186,13 @@ const list = async (req, res) => {
 
     let users = null;
 
+    let followInfo = null;
+
     try {
         users = await User.paginate({}, { page, limit: itemsPerPage, sort: { _id: 1 } });
+
+        followInfo = await followService.followUserIds(req.user.id);
+
     } catch (error) {
         console.error(`Users - List: ${error}`);
         return res.status(500).send({
@@ -199,7 +211,9 @@ const list = async (req, res) => {
 
     return res.status(200).send({
         status: "success",
-        users
+        users,
+        user_following: followInfo.following,
+        user_followers: followInfo.followers
     });
 
 }
@@ -286,8 +300,8 @@ const upload = async (req, res) => {
     let userUpdated = null;
 
     try {
-        userUpdated = await User.findOneAndUpdate({_id: userIdentity.id}, {image: req.file.filename}, {new: true});
-    } catch(error) {
+        userUpdated = await User.findOneAndUpdate({ _id: userIdentity.id }, { image: req.file.filename }, { new: true });
+    } catch (error) {
         console.log("Error: " + error);
         return res.status(500).send({
             status: "error",
@@ -329,7 +343,7 @@ const avatar = async (req, res) => {
             status: "error",
             message: "User not found"
         });
-    } 
+    }
 
     const filePath = "./uploads/avatars/" + user.image;
     console.log("filePath: " + filePath);
@@ -337,15 +351,15 @@ const avatar = async (req, res) => {
     fs.stat(filePath, (error, exists) => {
         if (!exists) {
             return res.status(404).send({
-                status:"error",
+                status: "error",
                 message: "No existe la imagen",
             });
-        } 
-    
+        }
+
         return res.sendFile(path.resolve(filePath));
     });
 
-    
+
 }
 
 module.exports = {

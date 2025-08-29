@@ -37,6 +37,22 @@ const followUserIds = async (identityUserId) => {
 
 const followThisUser = async (identityUserId, profileUserId) => {
 
+    let following = null;
+    let follower = null;
+
+    try {
+        following = await Follow.findOne({ user: identityUserId, followed: profileUserId });
+
+        follower = await Follow.findOne({ followed: identityUserId, user: profileUserId });
+
+        return {
+            following,
+            follower
+        }
+    } catch (error) {
+        throw new Exception("Exception at followThisUser");
+    }
+
 }
 
 module.exports = {
