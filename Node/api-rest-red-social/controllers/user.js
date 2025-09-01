@@ -4,6 +4,7 @@ const path = require("path");
 const User = require("../models/User");
 const jwt = require("../services/jwt");
 const followService = require("../services/followService");
+const validate = require("../helpers/validate");
 
 const pruebaUser = (req, res) => {
     return res.status(200).send({
@@ -25,9 +26,11 @@ const register = async (req, res) => {
         });
     }
 
+    
+
     let findedUsers = null;
     try {
-
+        validate.validate(params);
         findedUsers = await User.find({
             $or: [
                 { email: params.email.toLowerCase() },
@@ -189,7 +192,14 @@ const list = async (req, res) => {
     let followInfo = null;
 
     try {
-        users = await User.paginate({}, { page, limit: itemsPerPage, sort: { _id: 1 } });
+        users = await User.paginate(
+            {},
+            {
+                page,
+                limit: itemsPerPage,
+                sort: { _id: 1 },
+                select: "-password -email -role -__v"
+            });
 
         followInfo = await followService.followUserIds(req.user.id);
 

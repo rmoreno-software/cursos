@@ -138,7 +138,7 @@ const following = async (req, res) => {
                 sort: { _id: 1 },
                 populate: [
                     //{ path: "user", select: "-password -role -__v" },
-                    { path: "followed", select: "-password -role -__v" }
+                    { path: "followed", select: "-password -role -__v -email" }
                 ]
             }
         );
@@ -184,7 +184,7 @@ const followers = async (req, res) => {
                 limit: itemsPerPage,
                 sort: { _id: 1 },
                 populate: [
-                    { path: "user", select: "-password -role -__v" },
+                    { path: "user", select: "-password -role -__v -email" },
                 ]
             }
         );

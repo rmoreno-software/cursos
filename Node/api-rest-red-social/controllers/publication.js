@@ -2,6 +2,7 @@ const Publication = require("../models/Publication");
 const User = require("../models/User");
 const fs = require("fs");
 const path = require("path");
+const followService = require("../services/followService");
 
 const test = (req, res) => {
     return res.status(200).send({ message: "Mensaje enviado des de controller" });
@@ -117,7 +118,7 @@ const user = async (req, res) => {
                 limit: itemsPerPage,
                 sort: ("-created_at"),
                 populate: [
-                    { path: "user", select: "-password -role -__v" }
+                    { path: "user", select: "-password -role -__v -email" }
                 ]
             }
         );
@@ -234,7 +235,41 @@ const media = async (req, res) => {
         return res.sendFile(path.resolve(filePath));
     });
 
+}
 
+const feed = async (req, res) => {
+
+    let page = 1;
+    const itemsPerPage = 3;
+
+    if (req.params.page) page = req.params.page;
+
+    try {
+        const myFollows = await followService.followUserIds(req.user.id);
+        const publications = await Publication.paginate(
+            { user: myFollows.following },
+            {
+                page,
+                limit: itemsPerPage,
+                sort: { _id: 1 },
+                populate: [
+                    { path: "user", select: "-password -role -__v -email" }
+                ]
+            });
+
+        return res.status(200).send({
+            status: "success",
+            following: myFollows.following,
+            publications
+        });
+
+    } catch(error) {
+        console.log(error);
+        return res.status(500).send({
+            status: "error",
+            message: "Error getting feed",
+        });
+    }
 }
 
 module.exports = {
@@ -244,5 +279,6 @@ module.exports = {
     remove,
     user,
     upload,
-    media
+    media,
+    feed
 }

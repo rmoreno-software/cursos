@@ -23,6 +23,7 @@ router.get("/user/:id", auth.auth, publicationController.user);
 router.get("/user/:id/:page", auth.auth, publicationController.user);
 router.post("/upload/:id", [auth.auth, uploads.single("file0")], publicationController.upload);
 router.get("/media/:id", auth.auth, publicationController.media);
-
+router.get("/feed/:page", auth.auth, publicationController.feed);
+router.get("/feed", auth.auth, publicationController.feed);
 
 module.exports = router;
