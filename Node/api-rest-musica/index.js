@@ -6,7 +6,7 @@ const artistRoutes = require("./routes/artist");
 const songRoutes = require("./routes/song");
 const userRoutes = require("./routes/user");
 
-console.log("API REST con Node para la app de musica arrancada!!");
+console.log("API REST with Node for the music app started!!");
 
 connection();
 
@@ -24,6 +24,6 @@ app.use("/api/song", songRoutes);
 app.use("/api/user", userRoutes);
 
 app.listen(port, () => {
-    console.log(`Servidor de node està escoltant en el port: ${port}`);
+    console.log(`Node server is listening on port: ${port}`);
 });
 
