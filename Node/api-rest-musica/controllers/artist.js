@@ -1,4 +1,6 @@
 const Artist = require("../models/Artist");
+const Album = require("../models/Album");
+const Song = require("../models/Song");
 const fs = require("fs");
 const path = require("path");
 
@@ -112,7 +114,8 @@ const remove = async (req, res) => {
     try {
         const artistId = req.params.id;
 
-        const artist = await Artist.findByIdAndDelete(artistId);
+        const artist = await Artist.findById(artistId);
+        const albumsRemoved = await Album.find({artist: artistId});        
 
         if (!artist) {
             return res.status(404).send({
@@ -121,9 +124,20 @@ const remove = async (req, res) => {
             });
         }
 
+        albumsRemoved.forEach(async (album) => {
+            const songRemoved = await Song.find({album: album._id});
+            songRemoved.forEach(async (song) => {
+                await Song.findByIdAndDelete(song._id);
+            });
+            await Album.findByIdAndDelete(album._id);
+        });
+
+        await Artist.findByIdAndDelete(artistId);
+
         return res.status(200).send({
             status: "success",
-            artistDeleted: artist
+            artistDeleted: artist,
+            albumsRemoved,
         });
     } catch (error) {
         console.error(error);
