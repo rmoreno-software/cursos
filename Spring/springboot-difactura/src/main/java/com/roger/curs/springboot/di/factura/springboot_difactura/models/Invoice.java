@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequestScope
-@JsonIgnoreProperties({"targetSource", "advisors"})
+// @JsonIgnoreProperties({"targetSource", "advisors"})
 public class Invoice {
 
     @Autowired
