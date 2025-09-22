@@ -2,7 +2,9 @@ package com.roger.springboot.di.app.springboot_di.services;
 
 import com.roger.springboot.di.app.springboot_di.models.Product;
 import com.roger.springboot.di.app.springboot_di.repositories.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +14,17 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService{
 
     private ProductRepository productRepository;
+    @Autowired
+    private Environment enviroment;
 
-    public ProductServiceImpl(@Qualifier("productList") ProductRepository productRepository) {
+    public ProductServiceImpl(@Qualifier("productRepositoryJson") ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
     @Override
     public List<Product> findAll() {
         return productRepository.findAll().stream().map(p -> {
-            Double priceTax = p.getPrice() * 1.25d;
+            Double priceTax = p.getPrice() * enviroment.getProperty("config.price.tax", Double.class);
             Product newProduct = (Product) p.clone();
             newProduct.setPrice(priceTax.longValue());
             return newProduct;
