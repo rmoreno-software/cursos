@@ -1,5 +1,6 @@
 package com.roger.curs.springboot.di.factura.springboot_difactura.models;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,17 @@ public class Invoice {
     @Autowired
     @Qualifier("itemsInvoiceOffice")
     private List<Item> items;
+
+    public Invoice() {
+        System.out.println("Creando el componente de la factura - Constructor");
+        System.out.println(description);
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Creando el componente de la factura - PostConstruct");
+        System.out.println(description);
+    }
 
     public Client getClient() {
         return client;
