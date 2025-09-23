@@ -1,5 +1,6 @@
 package com.roger.curs.springboot.error.springboot_error.controllers;
 
+import com.roger.curs.springboot.error.springboot_error.exceptions.UserNotFoundException;
 import com.roger.curs.springboot.error.springboot_error.models.domain.User;
 import com.roger.curs.springboot.error.springboot_error.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class AppController {
     @GetMapping("/show/{id}")
     public User show(@PathVariable(name = "id") Long id) {
         User user = userService.findById(id);
+        if (user == null)
+            throw new UserNotFoundException("Error. El usuario no existe");
         System.out.println(user.getName());
         return user;
     }
