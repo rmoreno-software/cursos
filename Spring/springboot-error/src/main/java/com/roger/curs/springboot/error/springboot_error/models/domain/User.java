@@ -5,6 +5,7 @@ public class User {
     private String name;
     private String lastname;
     private Long id;
+    private Role role;
 
     public User(String name, String lastname, Long id) {
         this.name = name;
@@ -37,5 +38,17 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getRoleName() {
+        return role.getName();
     }
 }
