@@ -1,6 +1,7 @@
 package com.roger.curs.springboot.app.aop.springboot_aop.aop;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,24 @@ public class GreetingAspect {
         String args = Arrays.toString(joinPoint.getArgs());
 
         logger.info("Después de lanzar excepción: " + method + " con los argumentos " + args);
+
+    }
+
+    @Around("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    public Object loggerArround(ProceedingJoinPoint proceedingJoinPoint) {
+        String method = proceedingJoinPoint.getSignature().getName();
+        String args = Arrays.toString(proceedingJoinPoint.getArgs());
+
+        Object result = null;
+        try {
+            logger.info("El metodo " + method + "() con los parametros " + args);
+            result = proceedingJoinPoint.proceed();
+            logger.info("El metodo " + method + "() retorna el resultado " + result);
+            return result;
+        } catch (Throwable e) {
+            logger.error("Error en la llamada del método " + method + "()");
+            throw new RuntimeException(e);
+        }
 
     }
 }
