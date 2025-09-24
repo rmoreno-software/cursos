@@ -1,5 +1,6 @@
 package com.roger.curs.springboot.calendar.interceptor.springboot_horario.interceptors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class CalendarInterceptor implements HandlerInterceptor {
@@ -35,7 +39,22 @@ public class CalendarInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> data = new HashMap<>();
+        StringBuilder message = new StringBuilder("Cerrado, fuera del horario de atención ");
+        message.append("por favor visitenos entre las  ");
+        message.append(open);
+        message.append("hrs. ");
+        message.append("y las ");
+        message.append(close);
+        message.append("hrs. ");
+        message.append("Gracias.");
+        data.put("message", message.toString());
+        data.put("date", new Date());
 
+        response.setContentType("application/json");
+        response.setStatus(401);
+        response.getWriter().write(mapper.writeValueAsString(data));
         return false;
     }
 
