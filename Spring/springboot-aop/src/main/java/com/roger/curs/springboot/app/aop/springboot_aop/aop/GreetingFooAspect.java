@@ -18,16 +18,13 @@ public class GreetingFooAspect {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Pointcut("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
-    private void greetingFooAspectPointcut() {}
-
-    @Before("greetingFooAspectPointcut()")
+    @Before("GreetingServicePointcuts.greetingFooAspectPointcut()")
     public void loggerBefore(JoinPoint joinPoint) {
 
         String method = joinPoint.getSignature().getName();
         String args = Arrays.toString(joinPoint.getArgs());
 
-        logger.info("FOO Antes: " + method + " con los argumentos " + args);
+        logger.info("FOO Antes: {} con los argumentos {}", method, args);
 
     }
 
