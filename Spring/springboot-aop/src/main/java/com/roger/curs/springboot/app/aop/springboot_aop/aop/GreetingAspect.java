@@ -17,7 +17,10 @@ public class GreetingAspect {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Before("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    @Pointcut("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    private void greetingLoggerPointcut() {}
+
+    @Before("greetingLoggerPointcut()")
     public void loggerBefore(JoinPoint joinPoint) {
 
         String method = joinPoint.getSignature().getName();
@@ -27,7 +30,7 @@ public class GreetingAspect {
 
     }
 
-    @After("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    @After("greetingLoggerPointcut()")
     public void loggerAfter(JoinPoint joinPoint) {
 
         String method = joinPoint.getSignature().getName();
@@ -37,7 +40,7 @@ public class GreetingAspect {
 
     }
 
-    @AfterReturning("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    @AfterReturning("greetingLoggerPointcut()")
     public void loggerAfterReturning(JoinPoint joinPoint) {
 
         String method = joinPoint.getSignature().getName();
@@ -47,7 +50,7 @@ public class GreetingAspect {
 
     }
 
-    @AfterThrowing("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    @AfterThrowing("greetingLoggerPointcut()")
     public void loggerAfterThrowing(JoinPoint joinPoint) {
 
         String method = joinPoint.getSignature().getName();
@@ -57,7 +60,7 @@ public class GreetingAspect {
 
     }
 
-    @Around("execution(* com.roger.curs.springboot.app.aop.springboot_aop.services.*.*(..))")
+    @Around("greetingLoggerPointcut()")
     public Object loggerArround(ProceedingJoinPoint proceedingJoinPoint) {
         String method = proceedingJoinPoint.getSignature().getName();
         String args = Arrays.toString(proceedingJoinPoint.getArgs());
