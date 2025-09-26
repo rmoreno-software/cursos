@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository extends CrudRepository<Person, Long> {
 
@@ -17,4 +18,9 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select p.name, p.lastname from Person p")
     List<String[]> findPersonData();
+
+    @Query("select p from Person p where p.id = ?1")
+    Optional<Person> findOne(Long id);
+
+    Iterable<Person> findByNameContaining(String name);
 }

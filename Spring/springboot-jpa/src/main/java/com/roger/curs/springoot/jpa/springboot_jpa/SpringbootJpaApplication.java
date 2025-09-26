@@ -38,16 +38,21 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 //
 //		personsJava.forEach(p -> System.out.println(p));
 
-		List<String[]> personData = repository.findPersonData();
+//		List<String[]> personData = repository.findPersonData();
+//
+//		personData.forEach(p -> System.out.println(p[0] + " " + p[1]));
 
-		personData.forEach(p -> System.out.println(p[0] + " " + p[1]));
+		Iterable<Person> personData = repository.findByNameContaining("ria");
+
+		personData.forEach(p -> System.out.println(p));
 
 		findOne();
 	}
 
 	public void findOne() {
 		Person person = null;
-		Optional<Person> optPerson = repository.findById(8L);
+//		Optional<Person> optPerson = repository.findById(8L);
+		Optional<Person> optPerson = repository.findOne(3L);
 		if(optPerson.isPresent()) {
 			person = optPerson.get();
 			System.out.println(person.toString());
