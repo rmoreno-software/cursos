@@ -44,13 +44,15 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 //
 //		personData.forEach(p -> System.out.println(p[0] + " " + p[1]));
 
-		Iterable<Person> personData = repository.findByNameContaining("ria");
+//		Iterable<Person> personData = repository.findByNameContaining("ria");
+//
+//		personData.forEach(p -> System.out.println(p));
+//
+//		findOne();
 
-		personData.forEach(p -> System.out.println(p));
+		// create();
 
-		findOne();
-
-		create();
+		update();
 	}
 
 	@Transactional(readOnly = true)
@@ -84,5 +86,26 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		Person person = new Person(null, name, lastName, programmingLanguage);
 		Person personNew = repository.save(person);
 		System.out.printf("Nou usuari creat: %s%n", personNew);
+	}
+
+	@Transactional
+	public void update() {
+		System.out.println("MODIFICANT USUARI");
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Introdueix el ID de la persona: ");
+		Long id = scanner.nextLong();
+		Optional<Person> optPerson = repository.findById(id);
+
+		optPerson.ifPresentOrElse(person -> {
+			System.out.println("Usuari trobat: " + person);
+			System.out.print("Introdueix el nou llenguatge de programació: ");
+			String pl = scanner.next();
+			person.setProgrammingLanguage(pl);
+			Person personUpdated = repository.save(person);
+			System.out.println("Persona actualitzada: " + personUpdated);
+		}, () -> System.out.println("Usuari no trobat"));
+
+		scanner.close();
 	}
 }
