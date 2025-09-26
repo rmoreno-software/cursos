@@ -47,6 +47,8 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		personData.forEach(p -> System.out.println(p));
 
 		findOne();
+
+		create();
 	}
 
 	public void findOne() {
@@ -60,5 +62,11 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 			System.out.println("Person not found");
 		}
 
+	}
+
+	public void create() {
+		Person person = new Person(null, "Lalo", "Thor", "Python");
+		Person personNew = repository.save(person);
+		System.out.println(personNew);
 	}
 }
