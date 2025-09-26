@@ -33,8 +33,12 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 //
 //		personsJava.forEach(p -> System.out.println(p));
 
-		Iterable<Person> personsJava = repository.findByProgrammingLanguageAndName("Java", "Maria");
+//		Iterable<Person> personsJava = repository.findByProgrammingLanguageAndName("Java", "Maria");
+//
+//		personsJava.forEach(p -> System.out.println(p));
 
-		personsJava.forEach(p -> System.out.println(p));
+		List<String[]> personData = repository.findPersonData();
+
+		personData.forEach(p -> System.out.println(p[0] + " " + p[1]));
 	}
 }
