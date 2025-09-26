@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @SpringBootApplication
 public class SpringbootJpaApplication implements CommandLineRunner {
@@ -51,6 +53,7 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		create();
 	}
 
+	@Transactional(readOnly = true)
 	public void findOne() {
 		Person person = null;
 //		Optional<Person> optPerson = repository.findById(8L);
@@ -64,9 +67,22 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 	}
 
+	@Transactional
 	public void create() {
-		Person person = new Person(null, "Lalo", "Thor", "Python");
+
+		System.out.println("CREANT NOU USUARI");
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Inserta el nom: ");
+		String name = scanner.next();
+		System.out.print("Inserta el cognom: ");
+		String lastName = scanner.next();
+		System.out.print("Inserta el llenguatge de programació: ");
+		String programmingLanguage = scanner.next();
+		scanner.close();
+
+		Person person = new Person(null, name, lastName, programmingLanguage);
 		Person personNew = repository.save(person);
-		System.out.println(personNew);
+		System.out.printf("Nou usuari creat: %s%n", personNew);
 	}
 }
