@@ -52,7 +52,10 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		// create();
 
-		update();
+		// update();
+
+		// delete();
+		delete2();
 	}
 
 	@Transactional(readOnly = true)
@@ -104,6 +107,36 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 			person.setProgrammingLanguage(pl);
 			Person personUpdated = repository.save(person);
 			System.out.println("Persona actualitzada: " + personUpdated);
+		}, () -> System.out.println("Usuari no trobat"));
+
+		scanner.close();
+	}
+
+	@Transactional
+	public void delete() {
+		System.out.println("ELIMINANT USUARI");
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Introdueix el ID de la persona: ");
+		Long id = scanner.nextLong();
+		repository.deleteById(id);
+		System.out.println("Usuari eliminat");
+		scanner.close();
+	}
+
+	@Transactional
+	public void delete2() {
+		System.out.println("ELIMINANT USUARI");
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Introdueix el ID de la persona: ");
+		Long id = scanner.nextLong();
+		Optional<Person> optPerson = repository.findById(id);
+
+		optPerson.ifPresentOrElse(person -> {
+			System.out.println("Usuari trobat: " + person);
+			repository.delete(person);
+			System.out.println("Persona eliminada");
 		}, () -> System.out.println("Usuari no trobat"));
 
 		scanner.close();
