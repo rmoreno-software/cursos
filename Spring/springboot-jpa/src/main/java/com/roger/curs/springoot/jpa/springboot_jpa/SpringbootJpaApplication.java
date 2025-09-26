@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 public class SpringbootJpaApplication implements CommandLineRunner {
@@ -40,5 +41,19 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		List<String[]> personData = repository.findPersonData();
 
 		personData.forEach(p -> System.out.println(p[0] + " " + p[1]));
+
+		findOne();
+	}
+
+	public void findOne() {
+		Person person = null;
+		Optional<Person> optPerson = repository.findById(8L);
+		if(optPerson.isPresent()) {
+			person = optPerson.get();
+			System.out.println(person.toString());
+		} else {
+			System.out.println("Person not found");
+		}
+
 	}
 }
