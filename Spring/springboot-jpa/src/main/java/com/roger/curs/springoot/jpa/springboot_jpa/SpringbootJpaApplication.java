@@ -287,5 +287,11 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		System.out.println("Min Length Name: " + repository.getMinLengthName());
 		System.out.println("Max Length Name: " + repository.getMaxLengthName());
+
+		System.out.println("CONSULTA RESUMEN FUNCIONES DE AGREGACION");
+		Object[] resumeReg = (Object[]) repository.getResumeAggregationFunction();
+		System.out.println("min=" + resumeReg[0] +
+				", max=" + resumeReg[1] + ", sum=" + resumeReg[2] +
+				", avg=" + resumeReg[3] + ", count=" + resumeReg[4]) ;
 	}
 }
