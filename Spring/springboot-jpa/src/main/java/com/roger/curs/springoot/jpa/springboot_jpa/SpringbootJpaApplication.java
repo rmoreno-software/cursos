@@ -63,7 +63,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		//personalizedQueryDistinct();
 
-		personalizedQueryConcatUpperAndLower();
+		// personalizedQueryConcatUpperAndLower();
+
+		personalizedQueryBetween();
 
 	}
 
@@ -236,5 +238,19 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		System.out.println("Consultas nombres y apellidos de persona lower");
 		List<String> namesLower = repository.findAllFullNameConcatLower();
 		namesLower.forEach(System.out::println);
+	}
+
+	@Transactional(readOnly = true)
+	public void personalizedQueryBetween() {
+		System.out.println("PERSONALIZED QUERY BETWEEN");
+
+		System.out.println("Consultas persons between");
+		List<Person> persons = repository.findPersonBetween();
+		persons.forEach(System.out::println);
+
+		System.out.println("Consultas persons between name");
+		persons = repository.findPersonBetweenName();
+		persons.forEach(System.out::println);
+
 	}
 }

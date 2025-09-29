@@ -69,4 +69,11 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select lower(p.name || ' ' || p.lastname) from Person p")
     List<String> findAllFullNameConcatLower();
+
+    @Query("select p from Person p where p.id between 2 and 5")
+    List<Person> findPersonBetween();
+
+    @Query("select p from Person p where p.name between 'J' and 'Q'")
+    List<Person> findPersonBetweenName();
+
 }
