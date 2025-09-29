@@ -111,4 +111,13 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select min(p.id), max(p.id), sum(p.id), avg(length(p.name)), count(p.id) from Person p")
     Object getResumeAggregationFunction();
+
+    @Query("select " +
+            "p.name, length(p.name) " +
+            "from Person p where length(p.name) = " +
+                "(select min(length(p2.name)) from Person p2)")
+    List<Object[]> getShortterName();
+
+    @Query("select p from Person p where p.id = (select max(p2.id) from Person p2)")
+    Optional<Person> getLastRegistration();
 }

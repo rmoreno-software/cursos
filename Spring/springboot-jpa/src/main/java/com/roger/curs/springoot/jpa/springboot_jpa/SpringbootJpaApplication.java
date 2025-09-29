@@ -293,5 +293,11 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		System.out.println("min=" + resumeReg[0] +
 				", max=" + resumeReg[1] + ", sum=" + resumeReg[2] +
 				", avg=" + resumeReg[3] + ", count=" + resumeReg[4]) ;
+
+		System.out.println("SUBQUERIES");
+		List<Object[]> per = repository.getShortterName();
+		per.forEach(reg -> System.out.println("Name: " + reg[0] + " Length: " + reg[1]));
+
+		System.out.println("Last registration: " + repository.getLastRegistration().orElseThrow());
 	}
 }
