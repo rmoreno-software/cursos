@@ -66,7 +66,11 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		// personalizedQueryConcatUpperAndLower();
 
-		personalizedQueryBetween();
+		// personalizedQueryBetween();
+
+		// create();
+
+		update();
 
 	}
 
