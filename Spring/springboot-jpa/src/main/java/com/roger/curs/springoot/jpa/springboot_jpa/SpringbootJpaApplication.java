@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -299,5 +300,13 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		per.forEach(reg -> System.out.println("Name: " + reg[0] + " Length: " + reg[1]));
 
 		System.out.println("Last registration: " + repository.getLastRegistration().orElseThrow());
+
+		System.out.println("WHERE IN");
+		List<Person> personsIn = repository.getPersonsByIds(Arrays.asList(1L, 2L, 8L));
+		personsIn.forEach(System.out::println);
+
+		System.out.println("WHERE NOT IN");
+		List<Person> personsNotIn = repository.getPersonsNotIn(Arrays.asList(1L, 2L, 8L));
+		personsNotIn.forEach(System.out::println);
 	}
 }

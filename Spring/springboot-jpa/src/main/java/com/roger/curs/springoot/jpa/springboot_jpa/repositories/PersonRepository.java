@@ -120,4 +120,10 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select p from Person p where p.id = (select max(p2.id) from Person p2)")
     Optional<Person> getLastRegistration();
+
+    @Query("select p from Person p where p.id in ?1")
+    List<Person> getPersonsByIds(List<Long> ids);
+
+    @Query("select p from Person p where p.id not in ?1")
+    List<Person> getPersonsNotIn(List<Long> ids);
 }
