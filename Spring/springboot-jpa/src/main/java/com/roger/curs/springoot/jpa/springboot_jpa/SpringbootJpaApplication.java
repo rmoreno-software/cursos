@@ -55,7 +55,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		// update();
 
 		// delete();
-		delete2();
+		// delete2();
+
+		personalizedQuery();
 	}
 
 	@Transactional(readOnly = true)
@@ -138,6 +140,22 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 			repository.delete(person);
 			System.out.println("Persona eliminada");
 		}, () -> System.out.println("Usuari no trobat"));
+
+		scanner.close();
+	}
+
+	@Transactional(readOnly = true)
+	public void personalizedQuery() {
+		System.out.println("PERSONALIZED QUERY");
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Introdueix el ID de la persona: ");
+		Long id = scanner.nextLong();
+		String name = repository.getNameById(id);
+		Long idDb = repository.getIdById(id);
+		String fullName = repository.getFullNameById(id);
+		System.out.println("ID" + idDb + " - Nom: " + name);
+		System.out.println("Fullname: " + fullName);
 
 		scanner.close();
 	}
