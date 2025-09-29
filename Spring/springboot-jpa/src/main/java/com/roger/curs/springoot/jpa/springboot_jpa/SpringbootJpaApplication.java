@@ -268,5 +268,13 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		persons = repository.findByIdBetweenOrderByNameDescLastnameAsc(5L, 10L);
 		persons.forEach(System.out::println);
 
+		System.out.println("Consultas getAll ordered");
+		persons = repository.getAll();
+		persons.forEach(System.out::println);
+
+		System.out.println("Consultas getAll  query method");
+		persons = repository.findAllByOrderByNameDesc();
+		persons.forEach(System.out::println);
+
 	}
 }
