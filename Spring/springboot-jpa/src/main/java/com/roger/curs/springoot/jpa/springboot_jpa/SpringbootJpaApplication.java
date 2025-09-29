@@ -1,5 +1,6 @@
 package com.roger.curs.springoot.jpa.springboot_jpa;
 
+import com.roger.curs.springoot.jpa.springboot_jpa.dto.PersonDTO;
 import com.roger.curs.springoot.jpa.springboot_jpa.entities.Person;
 import com.roger.curs.springoot.jpa.springboot_jpa.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,6 +181,12 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		System.out.println("LIST NAME+LASTNAME");
 		List<Person> personsPersonalized = repository.findAllClassPersonPersonalized();
 		personsPersonalized.forEach(p -> {
+			System.out.println(p);
+		});
+
+		System.out.println("LIST PERSONDTO");
+		List<PersonDTO> personsDTO = repository.findAllClassPersonDto();
+		personsDTO.forEach(p -> {
 			System.out.println(p);
 		});
 
