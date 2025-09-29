@@ -9,7 +9,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -62,7 +61,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		// personalizedQuery();
 		//personalizedQuery2();
 
-		personalizedQueryDistinct();
+		//personalizedQueryDistinct();
+
+		personalizedQueryConcatUpperAndLower();
 
 	}
 
@@ -214,5 +215,26 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		System.out.println("Consultas con count programLanguages distinct");
 		Long count = repository.findProgrammingLanguagesDistinctCount();
 		System.out.println("Count: " + count);
+	}
+
+	@Transactional(readOnly = true)
+	public void personalizedQueryConcatUpperAndLower() {
+		System.out.println("PERSONALIZED QUERY CONCAT UPPER AND LOWER");
+
+		System.out.println("Consultas nombres y apellidos de persona");
+		List<String> names = repository.findAllFullNameConcat();
+		names.forEach(System.out::println);
+
+		System.out.println("Consultas nombres y apellidos de persona 2");
+		List<String> names2 = repository.findAllFullNameConcat2();
+		names2.forEach(System.out::println);
+
+		System.out.println("Consultas nombres y apellidos de persona upper");
+		List<String> namesUpper = repository.findAllFullNameConcatUpper();
+		namesUpper.forEach(System.out::println);
+
+		System.out.println("Consultas nombres y apellidos de persona lower");
+		List<String> namesLower = repository.findAllFullNameConcatLower();
+		namesLower.forEach(System.out::println);
 	}
 }
