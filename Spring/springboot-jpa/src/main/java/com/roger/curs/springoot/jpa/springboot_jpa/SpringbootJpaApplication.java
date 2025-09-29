@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -154,8 +155,12 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		String name = repository.getNameById(id);
 		Long idDb = repository.getIdById(id);
 		String fullName = repository.getFullNameById(id);
+		Object[] fullData = (Object[]) repository.findPersonDataFullById(id);
 		System.out.println("ID" + idDb + " - Nom: " + name);
 		System.out.println("Fullname: " + fullName);
+        for (Object fullDatum : fullData) {
+            System.out.print(fullDatum + " - ");
+        }
 
 		scanner.close();
 	}

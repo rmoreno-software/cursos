@@ -32,4 +32,7 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select concat(p.name, ' ', p.lastname) as fullname from Person p where p.id=?1")
     String getFullNameById(Long id);
+
+    @Query("select p.id, p.name, p.lastname, p.programmingLanguage from Person p where p.id =?1")
+    Object findPersonDataFullById(Long id);
 }
