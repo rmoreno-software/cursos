@@ -54,7 +54,7 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		// create();
 
-		// update();
+		 update();
 
 		// delete();
 		// delete2();
@@ -68,9 +68,6 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 
 		// personalizedQueryBetween();
 
-		// create();
-
-		update();
 
 	}
 

@@ -19,11 +19,8 @@ public class Person {
     @Column(name = "programming_language")
     private String programmingLanguage;
 
-    @Column(name = "create_at")
-    private LocalDateTime createAt;
-
-    @Column(name = "update_ap")
-    private LocalDateTime updateAt;
+    @Embedded
+    private Audit audit = new Audit();
 
 
     public Person() {
@@ -39,18 +36,6 @@ public class Person {
     public Person(String name, String lastname) {
         this.name = name;
         this.lastname = lastname;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        System.out.println("Evento del ciclo de vida del entity prepersist");
-        this.createAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        System.out.println("Evento del ciclo de vida del entity preUpdate");
-        this.updateAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -92,6 +77,8 @@ public class Person {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", programmingLanguage='" + programmingLanguage + '\'' +
+                ", createAt='" + audit.getCreateAt() + '\'' +
+                ", updateAt='" + audit.getUpdateAt() + '\'' +
                 '}';
     }
 
