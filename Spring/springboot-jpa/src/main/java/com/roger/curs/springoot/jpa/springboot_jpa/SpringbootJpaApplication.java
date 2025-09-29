@@ -60,7 +60,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		// delete2();
 
 		// personalizedQuery();
-		personalizedQuery2();
+		//personalizedQuery2();
+
+		personalizedQueryDistinct();
 
 	}
 
@@ -191,5 +193,26 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		});
 
 		scanner.close();
+	}
+
+	@Transactional(readOnly = true)
+	public void personalizedQueryDistinct() {
+		System.out.println("PERSONALIZED QUERY DISTINCT");
+
+		System.out.println("Consultas con nombres de personas");
+		List<String> names = repository.findAllNames();
+		names.forEach(System.out::println);
+
+		System.out.println("Consultas con nombres de personas distinct");
+		List<String> namesD = repository.findAllNamesDistinct();
+		namesD.forEach(System.out::println);
+
+		System.out.println("Consultas con programLanguages distinct");
+		List<String> plD = repository.findProgrammingLanguagesDistinct();
+		plD.forEach(System.out::println);
+
+		System.out.println("Consultas con count programLanguages distinct");
+		Long count = repository.findProgrammingLanguagesDistinctCount();
+		System.out.println("Count: " + count);
 	}
 }

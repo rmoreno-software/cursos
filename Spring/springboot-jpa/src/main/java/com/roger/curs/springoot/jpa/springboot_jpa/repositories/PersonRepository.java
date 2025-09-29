@@ -45,4 +45,16 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     @Query("select new com.roger.curs.springoot.jpa.springboot_jpa.dto.PersonDTO(p.name, p.lastname) from Person p")
     List<PersonDTO> findAllClassPersonDto();
+
+    @Query("select p.name from Person p")
+    List<String> findAllNames();
+
+    @Query("select distinct(p.name) from Person p")
+    List<String> findAllNamesDistinct();
+
+    @Query("select distinct(p.programmingLanguage) from Person p")
+    List<String> findProgrammingLanguagesDistinct();
+
+    @Query("select count(distinct(p.programmingLanguage)) from Person p")
+    Long findProgrammingLanguagesDistinctCount();
 }
