@@ -58,7 +58,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		// delete();
 		// delete2();
 
-		personalizedQuery();
+		// personalizedQuery();
+		personalizedQuery2();
+
 	}
 
 	@Transactional(readOnly = true)
@@ -161,6 +163,25 @@ public class SpringbootJpaApplication implements CommandLineRunner {
         for (Object fullDatum : fullData) {
             System.out.print(fullDatum + " - ");
         }
+
+		scanner.close();
+	}
+
+	@Transactional(readOnly = true)
+	public void personalizedQuery2() {
+		System.out.println("PERSONALIZED QUERY 2");
+		Scanner scanner = new Scanner(System.in);
+
+		List<Object[]> dataMix = repository.findAllMixPersona();
+		dataMix.forEach(reg -> {
+			System.out.println("programmingLanguage=" + reg[1] + ", person=" + reg[0]);
+		});
+
+		System.out.println("LIST NAME+LASTNAME");
+		List<Person> personsPersonalized = repository.findAllClassPersonPersonalized();
+		personsPersonalized.forEach(p -> {
+			System.out.println(p);
+		});
 
 		scanner.close();
 	}
