@@ -91,4 +91,13 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     List<Person> findAllByOrderByNameDesc();
 
+    @Query("select count(p) from Person p")
+    Long totalPerson();
+
+    @Query("select min(p.id) from Person p")
+    Long minId();
+
+    @Query("select max(p.id) from Person p")
+    Long maxId();
+
 }

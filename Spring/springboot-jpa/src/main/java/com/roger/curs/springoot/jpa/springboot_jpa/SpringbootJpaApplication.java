@@ -276,5 +276,9 @@ public class SpringbootJpaApplication implements CommandLineRunner {
 		persons = repository.findAllByOrderByNameDesc();
 		persons.forEach(System.out::println);
 
+		System.out.println("Total persons: " + repository.totalPerson());
+		System.out.println("Max Id: " + repository.maxId());
+		System.out.println("Min id: " + repository.minId());
+
 	}
 }
