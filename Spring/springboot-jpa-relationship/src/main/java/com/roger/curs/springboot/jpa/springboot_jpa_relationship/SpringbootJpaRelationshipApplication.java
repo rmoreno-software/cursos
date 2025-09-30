@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
@@ -31,7 +32,8 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// manyToOne();
 		// manyToOneFindById();
 		// oneToMany();
-		oneToManyFindById();
+		// oneToManyFindById();
+		removeAddress();
 	}
 
 	@Transactional
@@ -95,11 +97,34 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 		client.setAddresses(Arrays.asList(address1, address2));
 
-		clientRepository.save(client);
-
 		System.out.println("Client: " + clientRepository.save(client));
 
 		System.out.println("****************************************************************************************");
+
+	}
+
+	@Transactional
+	public void removeAddress() {
+		System.out.println("******************************** REMOVE ADDRESS  ********************************");
+		Client client = clientRepository.findById(2L).orElseThrow();
+
+		Address address1 = new Address("Palet i Barba", 36);
+		Address address2 = new Address("Font de l'escot", 34);
+
+		client.setAddresses(Arrays.asList(address1, address2));
+
+		Client savedClient = clientRepository.save(client);
+
+		System.out.println("Client: " + savedClient);
+
+		Optional<Client> optionalClient = clientRepository.findById(2L);
+		optionalClient.ifPresent(c -> {
+			c.getAddresses().remove(address1);
+			Client clientAfterRemove = clientRepository.save(c);
+			System.out.println("Client after remove: " + clientAfterRemove);
+		});
+
+		System.out.println("********************************************************************************");
 
 	}
 }
