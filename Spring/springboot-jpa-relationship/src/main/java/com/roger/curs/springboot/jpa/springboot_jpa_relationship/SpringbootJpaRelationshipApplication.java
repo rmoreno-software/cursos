@@ -1,5 +1,6 @@
 package com.roger.curs.springboot.jpa.springboot_jpa_relationship;
 
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Address;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Client;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Invoice;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
@@ -9,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
@@ -27,6 +30,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		manyToOne();
 		manyToOneFindById();
+		oneToMany();
 	}
 
 	@Transactional
@@ -58,6 +62,25 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		System.out.println("InvoiceDB: " + invoiceDb);
 
 		System.out.println("****************************************************************************************");
+
+	}
+
+	@Transactional
+	public void oneToMany() {
+		System.out.println("******************************** ONE TO MANY ********************************");
+		Client client = new Client("Roger", "Moreno");
+
+		Address address1 = new Address("Palet i Barba", 36);
+		Address address2 = new Address("Font de l'escot", 34);
+
+		client.getAddresses().add(address1);
+		client.getAddresses().add(address2);
+
+		clientRepository.save(client);
+
+		System.out.println("Client: " + client);
+
+		System.out.println("*****************************************************************************");
 
 	}
 }
