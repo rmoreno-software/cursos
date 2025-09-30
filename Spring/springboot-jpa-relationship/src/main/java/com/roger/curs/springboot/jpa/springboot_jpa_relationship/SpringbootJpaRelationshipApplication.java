@@ -25,12 +25,13 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		manyToOne();
+		manyToOneFindById();
 	}
 
 	public void manyToOne() {
 		System.out.println("******************************** MANY TO ONE ********************************");
 		Client client = clientRepository.save(new Client("John", "Doe"));
-		Invoice invoice = new Invoice("Invoice 1", "77");
+		Invoice invoice = new Invoice("MANY TO ONE", "77");
 
 		invoice.setClient(client);
 
@@ -39,6 +40,21 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		System.out.println("InvoiceDB: " + invoiceDb);
 
 		System.out.println("*****************************************************************************");
+
+	}
+
+	public void manyToOneFindById() {
+		System.out.println("******************************** MANY TO ONE FIND BY ID ********************************");
+		Client client = clientRepository.findById(1L).orElseThrow();
+		Invoice invoice = new Invoice("MANY TO ONE FIND BY ID", "780");
+
+		invoice.setClient(client);
+
+		Invoice invoiceDb = invoiceRepository.save(invoice);
+
+		System.out.println("InvoiceDB: " + invoiceDb);
+
+		System.out.println("****************************************************************************************");
 
 	}
 }
