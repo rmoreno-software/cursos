@@ -2,6 +2,9 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name="clients")
 public class Client {
@@ -13,10 +16,16 @@ public class Client {
     private String name;
     private String lastname;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addresses;
+
+
     public Client() {
+        this.addresses = new ArrayList<>();
     }
 
     public Client(String name, String lastname) {
+        this();
         this.name = name;
         this.lastname = lastname;
     }
@@ -45,12 +54,21 @@ public class Client {
         this.lastname = lastname;
     }
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
     @Override
     public String toString() {
         return "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", addresses=" + addresses +
                 '}';
     }
 }

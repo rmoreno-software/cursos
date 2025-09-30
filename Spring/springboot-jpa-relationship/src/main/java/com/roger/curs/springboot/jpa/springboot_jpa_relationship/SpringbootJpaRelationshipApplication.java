@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
@@ -28,6 +29,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		manyToOneFindById();
 	}
 
+	@Transactional
 	public void manyToOne() {
 		System.out.println("******************************** MANY TO ONE ********************************");
 		Client client = clientRepository.save(new Client("John", "Doe"));
@@ -43,6 +45,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 	}
 
+	@Transactional
 	public void manyToOneFindById() {
 		System.out.println("******************************** MANY TO ONE FIND BY ID ********************************");
 		Client client = clientRepository.findById(1L).orElseThrow();

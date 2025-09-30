@@ -14,6 +14,7 @@ public class Invoice {
     private String total;
 
     @ManyToOne
+    // @JoinColumn(name = "client_id")
     private Client client;
 
     public Invoice() {
