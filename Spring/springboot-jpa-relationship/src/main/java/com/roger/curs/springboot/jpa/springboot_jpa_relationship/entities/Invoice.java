@@ -13,6 +13,8 @@ public class Invoice {
     private String description;
     private String total;
 
+    private Client client;
+
     public Invoice() {
     }
 
@@ -44,5 +46,15 @@ public class Invoice {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", total='" + total + '\'' +
+                ", client=" + client +
+                '}';
     }
 }
