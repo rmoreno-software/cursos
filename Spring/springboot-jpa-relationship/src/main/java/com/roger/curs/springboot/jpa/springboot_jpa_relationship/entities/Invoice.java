@@ -13,13 +13,13 @@ public class Invoice {
     private String description;
     private String total;
 
+    @ManyToOne
     private Client client;
 
     public Invoice() {
     }
 
-    public Invoice(Long id, String description, String total) {
-        this.id = id;
+    public Invoice(String description, String total) {
         this.description = description;
         this.total = total;
     }
@@ -46,6 +46,14 @@ public class Invoice {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
