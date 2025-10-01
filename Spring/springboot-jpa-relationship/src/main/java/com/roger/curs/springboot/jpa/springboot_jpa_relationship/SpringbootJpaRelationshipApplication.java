@@ -119,7 +119,8 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 		Optional<Client> optionalClient = clientRepository.findById(2L);
 		optionalClient.ifPresent(c -> {
-			c.getAddresses().remove(address1);
+			Address ad = c.getAddresses().get(0);
+			c.getAddresses().remove(ad);
 			Client clientAfterRemove = clientRepository.save(c);
 			System.out.println("Client after remove: " + clientAfterRemove);
 		});

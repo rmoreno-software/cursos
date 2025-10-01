@@ -53,4 +53,40 @@ public class Address {
                 ", number=" + number +
                 '}';
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            System.out.println("EQUALS 1");
+            return true;
+        }
+        if (obj == null) {
+            System.out.println("EQUALS 2");
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            System.out.println("EQUALS 3");
+            return false;
+        }
+        Address other = (Address) obj;
+        if (id == null) {
+            if (other.id != null) {
+                System.out.println("EQUALS 4");
+                return false;
+            }
+        } else if (!id.equals(other.id)){
+            System.out.println("EQUALS 5");
+            return false;
+        }
+        System.out.println("EQUALS 6");
+        return true;
+    }
 }
