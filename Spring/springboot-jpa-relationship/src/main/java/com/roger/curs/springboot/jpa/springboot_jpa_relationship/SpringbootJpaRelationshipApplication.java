@@ -1,12 +1,10 @@
 package com.roger.curs.springboot.jpa.springboot_jpa_relationship;
 
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Address;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Client;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.ClientDetails;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Invoice;
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.*;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +25,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private ClientDetailsRepository clientDetailsRepository;
 
+	@Autowired
+	private StudentRepository studentRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
@@ -44,8 +45,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToManyRemoveInvoiceBidirectional();
 		// oneToOne();
 		// oneToOneFindById();
-		oneToOneBidirectional();
-		oneToOneBidirectionalFindById();
+		// oneToOneBidirectional();
+		// oneToOneBidirectionalFindById();
+		manyToMany();
 	}
 
 	@Transactional
@@ -296,6 +298,28 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		});
 
 		System.out.println("******************************************************************************************");
+
+	}
+
+	@Transactional
+	public void manyToMany() {
+		System.out.println("******************************** MANY TO MANY ********************************");
+
+		Student student1 = new Student("Jano", "Pura");
+		Student student2 = new Student("Erba", "Doe");
+
+		Course course1 = new Course("Curso de Java Master", "Roger");
+		Course course2 = new Course("Curso de JMIX", "Reyes");
+
+		student1.setCourses(Set.of(course1, course2));
+		student2.setCourses(Set.of(course2));
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println("Student1: " + student1);
+		System.out.println("Student2: " + student2);
+
+		System.out.println("******************************************************************************");
 
 	}
 }
