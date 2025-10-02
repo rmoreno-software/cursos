@@ -2,9 +2,7 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,6 +23,9 @@ public class Client {
 //            inverseJoinColumns = @JoinColumn(name = "id_addresses"),
 //            uniqueConstraints = @UniqueConstraint(columnNames = {"id_addresses"}))
     private Set<Address> addresses;
+
+    @OneToOne
+    private ClientDetails clientDetails;
 
     @OneToMany(
             cascade = CascadeType.ALL,
@@ -83,6 +84,14 @@ public class Client {
         this.invoices = invoices;
     }
 
+    public ClientDetails getClientDetails() {
+        return clientDetails;
+    }
+
+    public void setClientDetails(ClientDetails clientDetails) {
+        this.clientDetails = clientDetails;
+    }
+
     public Client addInvoice(Invoice invoice) {
         this.invoices.add(invoice);
         invoice.setClient(this);
@@ -102,6 +111,7 @@ public class Client {
                 ", lastname='" + lastname + '\'' +
                 ", addresses=" + addresses +
                 ", invoices=" + invoices +
+                ", clientDetails=" + clientDetails +
                 '}';
     }
 }

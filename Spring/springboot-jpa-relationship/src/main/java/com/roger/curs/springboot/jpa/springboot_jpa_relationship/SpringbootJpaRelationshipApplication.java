@@ -2,7 +2,9 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship;
 
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Address;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Client;
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.ClientDetails;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.Invoice;
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private InvoiceRepository invoiceRepository;
 
+	@Autowired
+	private ClientDetailsRepository clientDetailsRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
@@ -35,8 +40,10 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// removeAddress();
 		// oneToManyInvoiceBidirectional();
 		// oneToManyInvoiceBidirectionalFindById();
-		oneToManyRemoveInvoiceBidirectionalFindbyid();
-		oneToManyRemoveInvoiceBidirectional();
+		// oneToManyRemoveInvoiceBidirectionalFindbyid();
+		// oneToManyRemoveInvoiceBidirectional();
+		oneToOne();
+		oneToOneFindById();
 	}
 
 	@Transactional
@@ -224,5 +231,37 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		});
 
 		System.out.println("**********************************************************************************************************");
+	}
+
+	@Transactional
+	public void oneToOne() {
+		System.out.println("******************************** ONE TO ONE ********************************");
+
+		ClientDetails clientDetails = clientDetailsRepository.save(new ClientDetails(false, 75));
+
+		Client client = new Client("Erba", "Pura");
+
+		client.setClientDetails(clientDetails);
+
+		System.out.println("Client: " + clientRepository.save(client));
+
+		System.out.println("****************************************************************************");
+
+	}
+
+	@Transactional
+	public void oneToOneFindById() {
+		System.out.println("******************************** ONE TO ONE FIND BY ID ********************************");
+
+		ClientDetails clientDetails = clientDetailsRepository.save(new ClientDetails(true, 80));
+
+		Client client = clientRepository.findOne(2L).get();
+
+		client.setClientDetails(clientDetails);
+
+		System.out.println("Client: " + clientRepository.save(client));
+
+		System.out.println("***************************************************************************************");
+
 	}
 }
