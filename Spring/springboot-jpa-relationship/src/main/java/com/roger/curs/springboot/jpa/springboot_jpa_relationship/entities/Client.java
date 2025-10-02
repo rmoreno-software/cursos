@@ -24,7 +24,7 @@ public class Client {
 //            uniqueConstraints = @UniqueConstraint(columnNames = {"id_addresses"}))
     private Set<Address> addresses;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
     private ClientDetails clientDetails;
 
     @OneToMany(
@@ -90,6 +90,12 @@ public class Client {
 
     public void setClientDetails(ClientDetails clientDetails) {
         this.clientDetails = clientDetails;
+        clientDetails.setClient(this);
+    }
+
+    public void removeClientDetails(ClientDetails clientDetails) {
+        clientDetails.setClient(null);
+        this.clientDetails = null;
     }
 
     public Client addInvoice(Invoice invoice) {

@@ -42,8 +42,10 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToManyInvoiceBidirectionalFindById();
 		// oneToManyRemoveInvoiceBidirectionalFindbyid();
 		// oneToManyRemoveInvoiceBidirectional();
-		oneToOne();
-		oneToOneFindById();
+		// oneToOne();
+		// oneToOneFindById();
+		oneToOneBidirectional();
+		oneToOneBidirectionalFindById();
 	}
 
 	@Transactional
@@ -262,6 +264,38 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		System.out.println("Client: " + clientRepository.save(client));
 
 		System.out.println("***************************************************************************************");
+
+	}
+
+	@Transactional
+	public void oneToOneBidirectional() {
+		System.out.println("******************************** ONE TO ONE BIDIRECTIONAL ********************************");
+
+		Client client = new Client("Erba", "Pura");
+
+		ClientDetails clientDetails = new ClientDetails(false, 75);
+
+		client.setClientDetails(clientDetails);
+
+		System.out.println("Client: " + clientRepository.save(client));
+
+		System.out.println("******************************************************************************************");
+
+	}
+
+	@Transactional
+	public void oneToOneBidirectionalFindById() {
+		System.out.println("******************************** ONE TO ONE BIDIRECTIONAL ********************************");
+
+		clientRepository.findOne(2L).ifPresent(c -> {
+			ClientDetails clientDetails = new ClientDetails(false, 75);
+
+			c.setClientDetails(clientDetails);
+
+			System.out.println("Client: " + clientRepository.save(c));
+		});
+
+		System.out.println("******************************************************************************************");
 
 	}
 }
