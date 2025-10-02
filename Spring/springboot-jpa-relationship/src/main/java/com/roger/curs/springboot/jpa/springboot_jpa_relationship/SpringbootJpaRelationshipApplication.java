@@ -33,7 +33,8 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// manyToOneFindById();
 		// oneToMany();
 		// oneToManyFindById();
-		removeAddress();
+		// removeAddress();
+		oneToManyInvoiceBidirectional();
 	}
 
 	@Transactional
@@ -126,6 +127,25 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		});
 
 		System.out.println("********************************************************************************");
+
+	}
+
+	@Transactional
+	public void oneToManyInvoiceBidirectional() {
+		System.out.println("******************************** ONE TO MANY INVOICE BIDIRECTIONAL  ********************************");
+		Client client = new Client("Roger", "Moreno");
+
+		Invoice invoice1 = new Invoice("compras de la casa", "5000");
+		Invoice invoice2 = new Invoice("compras de oficina", "8000");
+
+		client.setInvoices(Arrays.asList(invoice1, invoice2));
+
+		invoice1.setClient(client);
+		invoice2.setClient(client);
+
+		System.out.println("Saved client: " + clientRepository.save(client));
+
+		System.out.println("***************************************************************************************************");
 
 	}
 }
