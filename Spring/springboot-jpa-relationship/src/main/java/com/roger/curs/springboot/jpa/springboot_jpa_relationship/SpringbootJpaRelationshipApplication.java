@@ -1,10 +1,7 @@
 package com.roger.curs.springboot.jpa.springboot_jpa_relationship;
 
 import com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities.*;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientDetailsRepository;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.ClientRepository;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.InvoiceRepository;
-import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.StudentRepository;
+import com.roger.curs.springboot.jpa.springboot_jpa_relationship.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +25,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 	@Autowired
 	private StudentRepository studentRepository;
 
+	@Autowired
+	private CourseRepository courseRepository;
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootJpaRelationshipApplication.class, args);
 	}
@@ -48,6 +48,7 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToOneBidirectional();
 		// oneToOneBidirectionalFindById();
 		manyToMany();
+		manyToManyFind();
 	}
 
 	@Transactional
@@ -320,6 +321,28 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		System.out.println("Student2: " + student2);
 
 		System.out.println("******************************************************************************");
+
+	}
+
+	@Transactional
+	public void manyToManyFind() {
+		System.out.println("******************************** MANY TO MANY FIND ********************************");
+
+		Course course1 = courseRepository.findById(1L).get();
+		Course course2 = courseRepository.findById(2L).get();
+
+		Student student1 = studentRepository.findById(1L).get();
+		Student student2 = studentRepository.findById(2L).get();
+
+		student1.setCourses(Set.of(course1, course2));
+		student2.setCourses(Set.of(course2));
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println("Student1: " + student1);
+		System.out.println("Student2: " + student2);
+
+		System.out.println("***********************************************************************************");
 
 	}
 }
