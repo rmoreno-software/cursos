@@ -2,6 +2,8 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -43,6 +45,18 @@ public class Course {
 
     public void setInstructor(String instructor) {
         this.instructor = instructor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return Objects.equals(id, course.id) && Objects.equals(name, course.name) && Objects.equals(instructor, course.instructor);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, instructor);
     }
 
     @Override
