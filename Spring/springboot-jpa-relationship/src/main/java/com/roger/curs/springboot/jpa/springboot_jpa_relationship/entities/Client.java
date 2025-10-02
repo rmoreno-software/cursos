@@ -89,6 +89,11 @@ public class Client {
         return this;
     }
 
+    public Client removeInvoice(Invoice invoice) {
+        this.invoices.remove(invoice);
+        return this;
+    }
+
     @Override
     public String toString() {
         return "{" +

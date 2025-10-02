@@ -34,7 +34,9 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToManyFindById();
 		// removeAddress();
 		// oneToManyInvoiceBidirectional();
-		oneToManyInvoiceBidirectionalFindById();
+		// oneToManyInvoiceBidirectionalFindById();
+		oneToManyRemoveInvoiceBidirectionalFindbyid();
+		oneToManyRemoveInvoiceBidirectional();
 	}
 
 	@Transactional
@@ -167,5 +169,60 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		});
 
 		System.out.println("*************************************************************************************************************");
+	}
+
+	@Transactional
+	public void oneToManyRemoveInvoiceBidirectionalFindbyid () {
+		System.out.println("******************************** ONE TO MANY REMOVE INVOICE BIDIRECTIONAL FINDBYID  ********************************");
+		Optional<Client> optionalClient = clientRepository.findOneWithInvoices(1L);
+
+		optionalClient.ifPresent(client -> {
+			Invoice invoice1 = new Invoice("compras de la casa", "5000");
+			Invoice invoice2 = new Invoice("compras de oficina", "8000");
+
+			client.addInvoice(invoice1).addInvoice(invoice2);
+
+			System.out.println("Saved client: " + clientRepository.save(client));
+		});
+
+		Optional<Client> optionalClient2 = clientRepository.findOneWithInvoices(1L);
+
+		optionalClient2.ifPresent(client -> {
+			Optional<Invoice> optionalInvoice = invoiceRepository.findById(2L);
+			optionalInvoice.ifPresent(invoice -> {
+				client.removeInvoice(invoice);
+				System.out.println("Client after delete: " + clientRepository.save(client));
+			});
+		});
+
+		System.out.println("********************************************************************************************************************");
+	}
+
+	@Transactional
+	public void oneToManyRemoveInvoiceBidirectional () {
+		System.out.println("******************************** ONE TO MANY REMOVE INVOICE BIDIRECTIONAL ********************************");
+
+		Client client = new Client("Roger", "Moreno");
+
+		Invoice invoice1 = new Invoice("compras de la casa", "5000");
+		Invoice invoice2 = new Invoice("compras de oficina", "8000");
+
+		client.addInvoice(invoice1).addInvoice(invoice2);
+
+		Client savedClient = clientRepository.save(client);
+		System.out.println("Saved client: " + savedClient);
+
+
+		Optional<Client> optionalClient2 = clientRepository.findOneWithInvoices(savedClient.getId());
+
+		optionalClient2.ifPresent(c -> {
+			Optional<Invoice> optionalInvoice = invoiceRepository.findById(3L);
+			optionalInvoice.ifPresent(invoice -> {
+				c.removeInvoice(invoice);
+				System.out.println("Client after delete: " + clientRepository.save(c));
+			});
+		});
+
+		System.out.println("**********************************************************************************************************");
 	}
 }
