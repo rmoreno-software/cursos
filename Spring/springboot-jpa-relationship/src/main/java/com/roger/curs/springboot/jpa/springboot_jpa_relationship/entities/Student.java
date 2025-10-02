@@ -17,6 +17,10 @@ public class Student {
     private String lastname;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable( name = "tbl_students_corses",
+                joinColumns = @JoinColumn(name = "student_id"),
+                inverseJoinColumns = @JoinColumn(name = "course_id"),
+                uniqueConstraints = @UniqueConstraint(columnNames = {"student_id", "course_id"}))
     private Set<Course> courses;
 
     public Student() {
