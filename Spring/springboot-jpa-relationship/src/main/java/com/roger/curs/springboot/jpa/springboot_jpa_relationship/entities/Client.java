@@ -24,8 +24,15 @@ public class Client {
 //            uniqueConstraints = @UniqueConstraint(columnNames = {"id_addresses"}))
     private List<Address> addresses;
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "client")
+    private List<Invoice> invoices;
+
     public Client() {
         this.addresses = new ArrayList<>();
+        this.invoices = new ArrayList<>();
     }
 
     public Client(String name, String lastname) {
@@ -66,6 +73,14 @@ public class Client {
         this.addresses = addresses;
     }
 
+    public List<Invoice> getInvoices() {
+        return invoices;
+    }
+
+    public void setInvoices(List<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+
     @Override
     public String toString() {
         return "{" +
@@ -73,6 +88,7 @@ public class Client {
                 ", name='" + name + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", addresses=" + addresses +
+                ", invoices=" + invoices +
                 '}';
     }
 }

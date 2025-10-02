@@ -14,7 +14,7 @@ public class Invoice {
     private String total;
 
     @ManyToOne
-    // @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id")
     private Client client;
 
     public Invoice() {
@@ -63,7 +63,7 @@ public class Invoice {
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", total='" + total + '\'' +
-                ", client=" + client +
+                // ", client=" + client +
                 '}';
     }
 }
