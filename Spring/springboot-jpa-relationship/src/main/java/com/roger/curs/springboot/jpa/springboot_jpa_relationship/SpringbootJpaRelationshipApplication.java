@@ -50,7 +50,10 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// manyToMany();
 		// manyToManyFind();
 		// manyToManyRemoveFind();
-		manyToManyRemove();
+		// manyToManyRemove();
+		// manyToManyBidirectional();
+		// manyToManyBidirectionalRemove();
+		manyToManyBidirectionalFind();
 	}
 
 	@Transactional
@@ -413,6 +416,85 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		}
 
 		System.out.println("*************************************************************************************");
+	}
+
+	@Transactional
+	public void manyToManyBidirectional() {
+		System.out.println("******************************** MANY TO MANY BIDIRECTIONAL ********************************");
+
+		Student student1 = new Student("Jano", "Pura");
+		Student student2 = new Student("Erba", "Doe");
+
+		Course course1 = new Course("Curso de Java Master", "Roger");
+		Course course2 = new Course("Curso de JMIX", "Reyes");
+
+//		student1.setCourses(Set.of(course1, course2));
+//		student2.setCourses(Set.of(course2));
+
+		student1.addCourse(course1).addCourse(course2);
+		student2.addCourse(course2);
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println("Student1: " + student1);
+		System.out.println("Student2: " + student2);
+
+		System.out.println("********************************************************************************************");
+
+	}
+
+	@Transactional
+	public void manyToManyBidirectionalRemove() {
+		System.out.println("******************************** MANY TO MANY BIDIRECTIONAL REMOVE ********************************");
+
+		Course course1 = courseRepository.save(new Course("Curso de java master", "Andres"));
+		Course course2 = courseRepository.save(new Course("Curso de spring boot", "Andres"));
+
+		Student student1 = studentRepository.save(new Student("Jano", "Pura"));
+		Student student2 = studentRepository.save(new Student("Erba", "Doe"));
+
+		student1.setCourses(Set.of(course1, course2));
+		student2.setCourses(Set.of(course2));
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println("Student1: " + student1);
+		System.out.println("Student2: " + student2);
+
+		System.out.println("****");
+
+		Optional<Student> studentDbOpt = studentRepository.findOneWithCourses(3L);
+		if (studentDbOpt.isPresent()) {
+			Student studentDb = studentDbOpt.get();
+			Optional<Course> coursOptDb = courseRepository.findOneWithStudents(3L);
+			if (coursOptDb.isPresent()) {
+				studentDb.removeCourse(coursOptDb.get());
+				System.out.println("Student after delete course: " + studentRepository.save(studentDb));
+			}
+		}
+
+		System.out.println("***************************************************************************************************");
+	}
+
+	@Transactional
+	public void manyToManyBidirectionalFind() {
+		System.out.println("******************************** MANY TO MANY BIDIRECTIONAL FIND ********************************");
+
+		Course course1 = courseRepository.findOneWithStudents(1L).get();
+		Course course2 = courseRepository.findOneWithStudents(2L).get();
+
+		Student student1 = studentRepository.findOneWithCourses(1L).get();
+		Student student2 = studentRepository.findOneWithCourses(2L).get();
+
+		student1.addCourse(course1).addCourse(course2);
+		student2.addCourse(course2);
+
+		studentRepository.saveAll(List.of(student1, student2));
+
+		System.out.println("Student1: " + student1);
+		System.out.println("Student2: " + student2);
+
+		System.out.println("*************************************************************************************************");
 
 	}
 }

@@ -3,6 +3,7 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -63,6 +64,30 @@ public class Student {
 
     public void setCourses(Set<Course> courses) {
         this.courses = courses;
+    }
+
+    public Student addCourse(Course course) {
+        this.courses.add(course);
+        course.getStudents().add(this);
+        return this;
+    }
+
+    public Student removeCourse(Course course) {
+        course.getStudents().remove(this);
+        this.courses.remove(course);
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(lastname, student.lastname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastname);
     }
 
     @Override
