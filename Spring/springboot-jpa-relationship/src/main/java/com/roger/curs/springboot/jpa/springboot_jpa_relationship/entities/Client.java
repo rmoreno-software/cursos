@@ -3,7 +3,9 @@ package com.roger.curs.springboot.jpa.springboot_jpa_relationship.entities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="clients")
@@ -22,17 +24,17 @@ public class Client {
 //            joinColumns = @JoinColumn(name = "id_client"),
 //            inverseJoinColumns = @JoinColumn(name = "id_addresses"),
 //            uniqueConstraints = @UniqueConstraint(columnNames = {"id_addresses"}))
-    private List<Address> addresses;
+    private Set<Address> addresses;
 
     @OneToMany(
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             mappedBy = "client")
-    private List<Invoice> invoices;
+    private Set<Invoice> invoices;
 
     public Client() {
-        this.addresses = new ArrayList<>();
-        this.invoices = new ArrayList<>();
+        this.addresses = new HashSet<>();
+        this.invoices = new HashSet<>();
     }
 
     public Client(String name, String lastname) {
@@ -65,19 +67,19 @@ public class Client {
         this.lastname = lastname;
     }
 
-    public List<Address> getAddresses() {
+    public Set<Address> getAddresses() {
         return addresses;
     }
 
-    public void setAddresses(List<Address> addresses) {
+    public void setAddresses(Set<Address> addresses) {
         this.addresses = addresses;
     }
 
-    public List<Invoice> getInvoices() {
+    public Set<Invoice> getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(List<Invoice> invoices) {
+    public void setInvoices(Set<Invoice> invoices) {
         this.invoices = invoices;
     }
 

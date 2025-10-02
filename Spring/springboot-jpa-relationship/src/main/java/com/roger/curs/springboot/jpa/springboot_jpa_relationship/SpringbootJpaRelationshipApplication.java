@@ -11,8 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 @SpringBootApplication
 public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
@@ -34,7 +33,8 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		// oneToMany();
 		// oneToManyFindById();
 		// removeAddress();
-		oneToManyInvoiceBidirectional();
+		// oneToManyInvoiceBidirectional();
+		oneToManyInvoiceBidirectionalFindById();
 	}
 
 	@Transactional
@@ -96,7 +96,10 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		Address address1 = new Address("Palet i Barba", 36);
 		Address address2 = new Address("Font de l'escot", 34);
 
-		client.setAddresses(Arrays.asList(address1, address2));
+		Set<Address> addresses = new HashSet<>();
+		addresses.add(address1);
+		addresses.add(address2);
+		client.setAddresses(addresses);
 
 		System.out.println("Client: " + clientRepository.save(client));
 
@@ -112,15 +115,18 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 		Address address1 = new Address("Palet i Barba", 36);
 		Address address2 = new Address("Font de l'escot", 34);
 
-		client.setAddresses(Arrays.asList(address1, address2));
+		Set<Address> addresses = new HashSet<>();
+		addresses.add(address1);
+		addresses.add(address2);
+		client.setAddresses(addresses);
 
 		Client savedClient = clientRepository.save(client);
 
 		System.out.println("Client: " + savedClient);
 
-		Optional<Client> optionalClient = clientRepository.findOne(2L);
+		Optional<Client> optionalClient = clientRepository.findOneWithAddresses(2L);
 		optionalClient.ifPresent(c -> {
-			Address ad = c.getAddresses().get(0);
+			Address ad = new ArrayList<>(c.getAddresses()).get(0);
 			c.getAddresses().remove(ad);
 			Client clientAfterRemove = clientRepository.save(c);
 			System.out.println("Client after remove: " + clientAfterRemove);
@@ -144,5 +150,22 @@ public class SpringbootJpaRelationshipApplication implements CommandLineRunner {
 
 		System.out.println("***************************************************************************************************");
 
+	}
+
+	@Transactional
+	public void oneToManyInvoiceBidirectionalFindById() {
+		System.out.println("******************************** ONE TO MANY INVOICE BIDIRECTIONAL FINDBYID  ********************************");
+		Optional<Client> optionalClient = clientRepository.findOneWithInvoices(1L);
+
+		optionalClient.ifPresent(client -> {
+			Invoice invoice1 = new Invoice("compras de la casa", "5000");
+			Invoice invoice2 = new Invoice("compras de oficina", "8000");
+
+			client.addInvoice(invoice1).addInvoice(invoice2);
+
+			System.out.println("Saved client: " + clientRepository.save(client));
+		});
+
+		System.out.println("*************************************************************************************************************");
 	}
 }
