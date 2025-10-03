@@ -35,8 +35,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Optional<Product> delete(Product product) {
+    public Optional<Product>  update(Product product) {
         Optional<Product> productDbOpt = productRepository.findById(product.getId());
+        Product p;
+        if (productDbOpt.isPresent()) {
+            p = productDbOpt.get();
+            p.setName(product.getName());
+            p.setDescription(product.getDescription());
+            p.setPrice((product.getPrice()));
+            return Optional.of(productRepository.save(p));
+        }
+        throw new RuntimeException("Error al modificar producto. Producto no encontrado.");
+    }
+
+    @Override
+    @Transactional
+    public Optional<Product> delete(Long id) {
+        Optional<Product> productDbOpt = productRepository.findById(id);
         productDbOpt.ifPresentOrElse(p -> {
             productRepository.delete(p);
         }, () -> {

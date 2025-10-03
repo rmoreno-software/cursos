@@ -40,23 +40,32 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
-        product.setId(id);
-        return ResponseEntity.status(HttpStatus.OK).body(productService.save(product));
+    @PutMapping
+    public ResponseEntity<?> update(@RequestBody Product product) {
+        try {
+            return ResponseEntity.ok(productService.update(product).orElseThrow());
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of(
+                            "status", "error",
+                            "message", "Error updating Product. Product Not Found."
+                    ));
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        Product product = productService.findById(id).orElse(null);
-
-        if (product == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Map.of("status", "error", "message", "product not found")
-            );
+        try {
+            return ResponseEntity.ok(productService.delete(id).orElseThrow());
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(Map.of(
+                            "status", "error",
+                            "message", "Error deleting Product. Product Not Found."
+                    ));
         }
-
-        return ResponseEntity.ok(productService.delete(product));
     }
 
 }
