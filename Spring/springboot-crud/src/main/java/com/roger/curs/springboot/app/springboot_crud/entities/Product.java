@@ -1,6 +1,7 @@
 package com.roger.curs.springboot.app.springboot_crud.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "products")
@@ -10,8 +11,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty
+    @Size(min = 3, max = 30)
     private String name;
+
+    @NotNull
+    @Min(20)
     private Integer price;
+
+    @NotEmpty
     private String description;
 
     public Long getId() {

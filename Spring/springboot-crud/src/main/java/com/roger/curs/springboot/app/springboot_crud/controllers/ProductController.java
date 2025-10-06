@@ -2,6 +2,7 @@ package com.roger.curs.springboot.app.springboot_crud.controllers;
 
 import com.roger.curs.springboot.app.springboot_crud.entities.Product;
 import com.roger.curs.springboot.app.springboot_crud.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
+    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody Product product) {
+    public ResponseEntity<?> update(@Valid @RequestBody Product product) {
         try {
             return ResponseEntity.ok(productService.update(product).orElseThrow());
         } catch (RuntimeException e) {
