@@ -1,6 +1,8 @@
 package com.roger.curs.springboot.app.springboot_crud.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
@@ -13,8 +15,12 @@ public class User {
     private Long id;
 
     @Column(unique = true)
+    @NotBlank
+    @Size(min = 4)
     private String username;
 
+    @NotBlank
+    @Size(min = 8, max = 16)
     private String password;
 
     private boolean enabled;
