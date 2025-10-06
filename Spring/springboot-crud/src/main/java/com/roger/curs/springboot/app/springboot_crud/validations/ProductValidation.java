@@ -1,4 +1,4 @@
-package com.roger.curs.springboot.app.springboot_crud;
+package com.roger.curs.springboot.app.springboot_crud.validations;
 
 import com.roger.curs.springboot.app.springboot_crud.entities.Product;
 import org.springframework.stereotype.Component;

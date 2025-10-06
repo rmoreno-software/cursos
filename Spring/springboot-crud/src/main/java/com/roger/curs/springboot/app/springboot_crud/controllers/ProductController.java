@@ -1,6 +1,5 @@
 package com.roger.curs.springboot.app.springboot_crud.controllers;
 
-import com.roger.curs.springboot.app.springboot_crud.ProductValidation;
 import com.roger.curs.springboot.app.springboot_crud.entities.Product;
 import com.roger.curs.springboot.app.springboot_crud.services.ProductService;
 import jakarta.validation.Valid;
@@ -21,8 +20,8 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private ProductValidation productValidation;
+//    @Autowired
+//    private ProductValidation productValidation;
 
     @GetMapping
     public List<Product> list() {
@@ -44,7 +43,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult bindingResult) {
-        productValidation.validate(product, bindingResult);
+        // productValidation.validate(product, bindingResult);
         if (bindingResult.hasFieldErrors()) {
             return validation(bindingResult);
         }
@@ -54,7 +53,7 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult bindingResult) {
         try {
-            productValidation.validate(product, bindingResult);
+            // productValidation.validate(product, bindingResult);
             if (bindingResult.hasFieldErrors()) {
                 return validation(bindingResult);
             }
