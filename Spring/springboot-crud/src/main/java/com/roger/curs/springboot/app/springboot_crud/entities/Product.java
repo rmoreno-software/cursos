@@ -1,5 +1,6 @@
 package com.roger.curs.springboot.app.springboot_crud.entities;
 
+import com.roger.curs.springboot.app.springboot_crud.validations.IsExistsDb;
 import com.roger.curs.springboot.app.springboot_crud.validations.IsRequired;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -22,6 +23,10 @@ public class Product {
 
     @IsRequired
     private String description;
+
+    @IsRequired
+    @IsExistsDb
+    private String sku;
 
     public Long getId() {
         return id;
@@ -53,5 +58,13 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 }

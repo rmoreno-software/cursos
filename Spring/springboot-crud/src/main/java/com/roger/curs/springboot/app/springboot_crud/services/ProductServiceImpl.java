@@ -43,6 +43,7 @@ public class ProductServiceImpl implements ProductService {
             p.setName(product.getName());
             p.setDescription(product.getDescription());
             p.setPrice((product.getPrice()));
+            p.setSku(product.getSku());
             return Optional.of(productRepository.save(p));
         }
         throw new RuntimeException("Error al modificar producto. Producto no encontrado.");
@@ -58,5 +59,11 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("Error al eliminar producto. Producto no encontrado.");
         });
         return productDbOpt;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySku(String sku) {
+        return productRepository.existsBySku(sku);
     }
 }
