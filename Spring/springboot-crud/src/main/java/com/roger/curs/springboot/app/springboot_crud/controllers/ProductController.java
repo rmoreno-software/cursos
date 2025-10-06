@@ -6,8 +6,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,13 +39,19 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
+    public ResponseEntity<?> create(@Valid @RequestBody Product product, BindingResult bindingResult) {
+        if (bindingResult.hasFieldErrors()) {
+            return validation(bindingResult);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(product));
     }
 
     @PutMapping
-    public ResponseEntity<?> update(@Valid @RequestBody Product product) {
+    public ResponseEntity<?> update(@Valid @RequestBody Product product, BindingResult bindingResult) {
         try {
+            if (bindingResult.hasFieldErrors()) {
+                return validation(bindingResult);
+            }
             return ResponseEntity.ok(productService.update(product).orElseThrow());
         } catch (RuntimeException e) {
             return ResponseEntity
@@ -67,6 +75,15 @@ public class ProductController {
                             "message", "Error deleting Product. Product Not Found."
                     ));
         }
+    }
+
+    private ResponseEntity<?> validation(BindingResult bindingResult) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("status", "error");
+        bindingResult.getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }
