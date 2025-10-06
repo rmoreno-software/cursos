@@ -20,10 +20,9 @@ public class User {
     private String username;
 
     @NotBlank
-    @Size(min = 8, max = 16)
     private String password;
 
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Transient
     private boolean admin;
