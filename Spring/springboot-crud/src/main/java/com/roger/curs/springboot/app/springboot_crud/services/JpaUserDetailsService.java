@@ -2,6 +2,7 @@ package com.roger.curs.springboot.app.springboot_crud.services;
 
 import com.roger.curs.springboot.app.springboot_crud.entities.User;
 import com.roger.curs.springboot.app.springboot_crud.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private UserRepository userRepository;
 
 
