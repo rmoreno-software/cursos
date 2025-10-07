@@ -26,16 +26,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasFieldErrors())
-            return validation(bindingResult);
+    public ResponseEntity<?> create(@Valid @RequestBody User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult bindingResult) {
+    public ResponseEntity<?> register(@Valid @RequestBody User user) {
         user.setAdmin(false);
-        return create(user, bindingResult);
+        return create(user);
     }
 
     private ResponseEntity<?> validation(BindingResult bindingResult) {

@@ -18,9 +18,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     @NotBlank
     @Size(min = 4)
+    @Column(unique = true)
     private String username;
 
     @NotBlank
