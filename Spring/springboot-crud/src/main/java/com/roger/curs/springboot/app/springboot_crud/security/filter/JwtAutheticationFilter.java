@@ -2,28 +2,30 @@ package com.roger.curs.springboot.app.springboot_crud.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roger.curs.springboot.app.springboot_crud.entities.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.roger.curs.springboot.app.springboot_crud.security.TokenJwtConfig.*;
 
 public class JwtAutheticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-
-    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
 
     public JwtAutheticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -48,12 +50,20 @@ public class JwtAutheticationFilter extends UsernamePasswordAuthenticationFilter
         org.springframework.security.core.userdetails.User user =
                 (org.springframework.security.core.userdetails.User) authResult.getPrincipal();
         String username = user.getUsername();
+        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
+
+        Claims claims = Jwts.claims().build();
+        claims.put("authorities", roles);
+
         String token = Jwts.builder()
                 .subject(username)
+                // .claim(claims.toString())
+                .expiration(new Date(System.currentTimeMillis() + 3600000))
+                .issuedAt(new Date())
                 .signWith(SECRET_KEY)
                 .compact();
 
-        response.addHeader("Authentication", "Bearer " + token);
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
         Map<String, String> body = new HashMap<>();
         body.put("token", token);
         body.put("username", username);
