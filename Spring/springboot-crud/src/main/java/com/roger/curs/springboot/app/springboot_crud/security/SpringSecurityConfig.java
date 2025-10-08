@@ -1,6 +1,7 @@
 package com.roger.curs.springboot.app.springboot_crud.security;
 
 import com.roger.curs.springboot.app.springboot_crud.security.filter.JwtAutheticationFilter;
+import com.roger.curs.springboot.app.springboot_crud.security.filter.JwtValidationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +37,7 @@ public class SpringSecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                 .anyRequest().authenticated())
                 .addFilter(new JwtAutheticationFilter(authenticationManager()))
+                .addFilter(new JwtValidationFilter(authenticationManager()))
                 .csrf(config -> config.disable())
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
