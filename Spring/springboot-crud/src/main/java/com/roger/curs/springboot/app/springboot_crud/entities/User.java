@@ -2,6 +2,7 @@ package com.roger.curs.springboot.app.springboot_crud.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.roger.curs.springboot.app.springboot_crud.validations.ExistsByUsername;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,6 +22,7 @@ public class User {
     @NotBlank
     @Size(min = 4)
     @Column(unique = true)
+    @ExistsByUsername
     private String username;
 
     @NotBlank

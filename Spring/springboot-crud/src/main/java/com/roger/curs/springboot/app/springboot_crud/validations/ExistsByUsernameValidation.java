@@ -12,12 +12,9 @@ public class ExistsByUsernameValidation implements ConstraintValidator<ExistsByU
     @Autowired
     private UserService userService;
 
-    public ExistsByUsernameValidation(UserService userService) {
-        this.userService = userService;
-    }
-
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (userService == null) return true;
         if (s == null || s.isBlank()) return true;
         return userService.findByUsername(s).isEmpty();
     }
