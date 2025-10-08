@@ -3,6 +3,7 @@ package com.roger.curs.springboot.app.springboot_crud.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roger.curs.springboot.app.springboot_crud.entities.User;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.roger.curs.springboot.app.springboot_crud.security.TokenJwtConfig.*;
 
@@ -51,9 +53,16 @@ public class JwtAutheticationFilter extends UsernamePasswordAuthenticationFilter
         String username = user.getUsername();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities",
+                roles.stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList()));
+        claims.put("username", username);
+
         String token = Jwts.builder()
                 .subject(username)
-                .claims(Map.of("authorities", roles))
+                .claims(claims)
                 .expiration(new Date(System.currentTimeMillis() + 3600000))
                 .issuedAt(new Date())
                 .signWith(SECRET_KEY)

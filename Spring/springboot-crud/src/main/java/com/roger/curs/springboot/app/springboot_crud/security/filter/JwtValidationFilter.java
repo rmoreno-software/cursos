@@ -1,7 +1,6 @@
 package com.roger.curs.springboot.app.springboot_crud.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.roger.curs.springboot.app.springboot_crud.security.SimpleGrantedAuthorityJsonCreator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -18,10 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.roger.curs.springboot.app.springboot_crud.security.TokenJwtConfig.*;
 
@@ -35,21 +32,23 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String header = request.getHeader(HEADER_AUTHORIZATION);
-        if (header == null || !header.startsWith(PREFIX_TOKEN))
+        if (header == null || !header.startsWith(PREFIX_TOKEN)) {
+            chain.doFilter(request, response);
             return;
+        }
 
         String token = header.replace(PREFIX_TOKEN, "");
+        token = token.replace(" ", "");
 
         try {
             Claims claims = Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(token).getPayload();
             String username = claims.getSubject();
-            // String username = (String) claims.get("username");
-            Object authoritiesClaims = claims.get("authorities");
 
+            List<String> roles = claims.get("authorities", List.class);
             Collection<? extends GrantedAuthority> authorities =
-                    Arrays.asList(new ObjectMapper()
-                            .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
-                            .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class));
+                    roles.stream()
+                            .map(SimpleGrantedAuthority::new)
+                            .collect(Collectors.toList());
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
