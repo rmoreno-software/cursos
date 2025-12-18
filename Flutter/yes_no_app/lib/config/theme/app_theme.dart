@@ -21,9 +21,6 @@ class AppTheme {
         'selected color must be between 0 and ${_colorThemes.length - 1}',
       );
   ThemeData theme() {
-    return ThemeData(
-      colorSchemeSeed: _colorThemes[selectedColor],
-      brightness: Brightness.dark,
-    );
+    return ThemeData(colorSchemeSeed: _colorThemes[selectedColor]);
   }
 }
