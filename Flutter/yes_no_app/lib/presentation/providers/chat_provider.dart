@@ -6,14 +6,13 @@ class ChatProvider extends ChangeNotifier {
   final GetYesNoAnswer getYesNoAnswer = GetYesNoAnswer();
   final ScrollController chatScrollController = ScrollController();
 
-  List<Message> messages = [
-    Message(text: 'Hola amor!', fromWho: FromWho.me),
-    Message(text: 'Ya Regresaste del trabajo?', fromWho: FromWho.me),
-  ];
+  List<Message> messages = [];
 
   Future<void> herReply() async {
     final herMessage = await getYesNoAnswer.getAnswer();
-    print(herMessage);
+    messages.add(herMessage);
+    notifyListeners();
+    moveScrollToBottom();
   }
 
   Future<void> sendMessage(String text) async {
